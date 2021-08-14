@@ -1,0 +1,14 @@
+body {
+	background: yellow;
+
+}
+button {
+	width: 100px;
+	height: 30px;
+	border: 3px solid white;
+	border-radius: 50px;
+	
+	cursor: pointer;
+	outline: none;
+}
+ 
