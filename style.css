@@ -1,14 +1,453 @@
-body {
-	background: yellow;
+Skip to content
+Search...
 
+Log in
+Create account
+
+17
+
+5
+
+27
+
+Cover image for Create a Stopwatch in JavaScript
+Create a Stopwatch in JavaScript
+#javascript #html #css #webdev
+
+GSPTeck
+Dec 14, 2020 ・Updated on Feb 11 ・3 min read
+Creating a timer is a very simple task. We will only be using variables, functions and THAT'S IT!
+
+HTML code:
+<html>
+    <head>
+        <title>JavaScript</title>
+
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="stopwatch">
+            00:00:00
+        </div>
+
+        <ul id="buttons">
+            <li><button onclick="startTimer()">Start</button></li>
+            <li><button onclick="stopTimer()">Stop</button></li>
+
+            <li><button onclick="resetTimer()">Reset</button></li>
+        </ul>
+
+        <script src="main.js"></script>
+    </body>
+</html>
+CSS code:
+body {
+    background: #202020;
+    color: white;
 }
 button {
-	width: 100px;
-	height: 30px;
-	border: 3px solid white;
-	border-radius: 50px;
-	
-	cursor: pointer;
-	outline: none;
+    width: 100px;
+    height: 30px;
+    border: 3px soldi white;
+    border-radius: 50px;
+    background: #202020;
+    color: white;
+    cursor: pointer;
+    outline: none;
 }
+
+#stopwatch {
+    font-size: 100px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+}
+#buttons {
+    position: absolute;
+    top: 55%;
+    left: 48.4%;
+    transform: translate(-51.6%, -45%);
+}
+#buttons li {
+    display: inline;
+    padding-left: 10px;
+}
+JavaScript code:
+const timer = document.getElementById('stopwatch');
+
+var hr = 0;
+var min = 0;
+var sec = 0;
+var stoptime = true;
+
+function startTimer() {
+  if (stoptime == true) {
+        stoptime = false;
+        timerCycle();
+    }
+}
+function stopTimer() {
+  if (stoptime == false) {
+    stoptime = true;
+  }
+}
+
+function timerCycle() {
+    if (stoptime == false) {
+    sec = parseInt(sec);
+    min = parseInt(min);
+    hr = parseInt(hr);
+
+    sec = sec + 1;
+
+    if (sec == 60) {
+      min = min + 1;
+      sec = 0;
+    }
+    if (min == 60) {
+      hr = hr + 1;
+      min = 0;
+      sec = 0;
+    }
+
+    if (sec < 10 || sec == 0) {
+      sec = '0' + sec;
+    }
+    if (min < 10 || min == 0) {
+      min = '0' + min;
+    }
+    if (hr < 10 || hr == 0) {
+      hr = '0' + hr;
+    }
+
+    timer.innerHTML = hr + ':' + min + ':' + sec;
+
+    setTimeout("timerCycle()", 1000);
+  }
+}
+
+function resetTimer() {
+    timer.innerHTML = '00:00:00';
+}
+Edit:
+As pointed out by 'uthx' in the comments we need to add a function to reset the values of sec, min and hr when resetting the time. We can do that by using the following function (function coded by 'uthx'):
+function resetTimer() {
+    timer.innerHTML = "00:00:00";
+    stoptime = true;
+    hr = 0;
+    sec = 0;
+    min = 0;
+}
+Final Result:
+Alt Text
+(Naturally it works. Tested it myself 😉)
+
+Explanation
+Disclaimer! In the code you may notice it's called a 'timer' and not 'stopwatch', that's because 'timer' is shorter than 'stopwatch' and I don't feel like having to type that all the time 😂.
+const timer = document.getElementById('stopwatch'); imports the timer 'div' as a variable, using it's id, so we can modify it as we wish.
+var hr = 0; var min = 0; var sec = 0; we are creating the hour, minute and second variables and we are declaring that their initial value is 0.
+var stoptime = true; we create a variable so we can then verify if the stopwatch is running or not.
+if (stoptime == true) { stoptime = false; timerCycle(); } if the stopwatch is not running, turn it on and go to the timerCycle() function. (This only runs if we click the 'Start' button)
+if (stoptime == false) { stoptime = true; } if the stopwatch is running, turn it off. (This only runs if we click the 'Stop' button)
+if (stoptime == false) { verify that the stopwatch is on.
+sec = parseInt(sec); min = parseInt(min); hr = parseInt(hr); these are used to parse a string into an integer. (if we have 1045 as a string and we want to use it as an integer, we parse it)
+sec = sec + 1; add 1 to seconds.
+if (sec == 60) { if seconds are equal to 60, minutes = 1 and seconds becomes 0 again.
+if (min == 60) { if minutes are equal to 60, hours = 1 and seconds + minutes becomes 0 again.
+Fun part:
+if (sec < 10 || sec == 0) {
+   sec = '0' + sec;
+}
+if (min < 10 || min == 0) {
+   min = '0' + min;
+}
+if (hr < 10 || hr == 0) {
+   hr = '0' + hr;
+}
+If seconds, minutes and/or hours are lower than 10, add a 0 in front. This is why we need to parse everything in the beginning: doing this operation they become strings.
+
+timer.innerHTML = hr + ':' + min + ':' + sec; add these values to the 'timer' div.
+setTimeout("timerCycle()", 1000); this will make sure there is a timeout of 1000 ms (1s) before repeating the 'timerCycle()'.
+timer.innerHTML = '00:00:00'; used to reset the timer to 00:00:00
+AND WE'RE DONE!
+Discussion (15)
+Subscribe
+pic
+Add to the discussion
  
+mahmoudibnsamy profile image
+Mahmoud Ibn Samy
+•
+Dec 14 '20
+
+It's a good implementation but I think by the time it won't represent the real-time as the 'setTimeout()' function won't run after an exact second, there will be some small lag.
+I think it will be better if you made use of the Date object.
+
+
+5
+ likes
+Reply
+ 
+gspteck profile image
+GSPTeck 
+•
+Dec 14 '20
+
+That's a great idea, but at the moment I don't know how to do that.
+If I ever learn how to do it, I might update the post.
+
+
+4
+ likes
+Reply
+ 
+l42ph profile image
+L42ph
+•
+Jul 25
+
+Found this when I was searching for a simple stopwatch. It's a nice starting point, but as others said, setTimeout() isn't 100% reliable, so I've made a version that uses performance.now() to keep track of time. It might be best to use window.requestAnimationFrame() for the most stable update frequency, but then you'll always have 60 cycles per second, and you might not need/want that many.
+Also, I wanted to have millisecond precision, and the ability to start the timer delayed, so you can 'alt-tab to another window' / 'activate another tab in your browser' before it starts!
+Please don't bother commenting on code readability, cuz I don't care for that, it's purely for functionality.
+
+jsfiddle.net/Larph/he10jyu9/
+
+
+2
+ likes
+Reply
+ 
+kimbrother6 profile image
+kimbrother6
+•
+Jul 21
+
+This is a very good post!!!
+However, there are times when the code runs in the timerCycle function. If I run the function again after exactly 1 second, wouldn't the time be wrong? Or is it not the time to be so concerned?
+
+
+2
+ likes
+Reply
+ 
+harshvats2000 profile image
+HARSH VATS
+•
+Mar 7
+
+Your code might work but I really don't think it's good level of code bcoz it's not understandable easily for someone else analysing it.
+Have a look at mine and decide yourself which one is better.
+jsfiddle.net/2vwcd3a8/
+
+
+2
+ likes
+Reply
+ 
+uthx profile image
+uthx
+•
+Feb 3
+
+Reset Functionality is not fully implemented.
+
+
+3
+ likes
+Reply
+ 
+gspteck profile image
+GSPTeck 
+•
+Feb 10
+
+What do you mean? Reset just makes the string 00:00:00 again. What isn't implemented?
+
+
+1
+ like
+Reply
+ 
+uthx profile image
+uthx
+•
+Feb 11
+
+It is just resetting the UI Part but not the actual variables which are still storing the old time values. Below is what i did to get it working.
+function resetTimer() {
+timer.innerHTML = "00:00:00";
+stoptime = true;
+hr = 0;
+sec = 0;
+min = 0;
+}
+
+
+2
+ likes
+Thread
+gspteck profile image
+GSPTeck 
+•
+Feb 11
+
+yeah you are right! missed that lol
+
+
+2
+ likes
+Reply
+ 
+ubongs profile image
+Ubong Sylvester
+•
+Jul 23
+
+Great post. Thanks for this. You can clearTimeout to remove the lag when you stop/reset the timer.
+
+Created a global variable
+let startTimeout;
+
+then in the timerCycle() function, initiate the timeout with
+startTimeout = setTimeout('timerCycle()', 1000);
+
+Create this function for stopping timer cycle
+function stopTimerCycle() {
+clearTimeout(startTimeout);
+}
+
+then Add stopTimercycle() and "function stopTimer()" to "function resetTimer()"
+
+
+1
+ like
+Reply
+ 
+praveenkalady profile image
+praveen
+•
+Dec 14 '20
+
+Great post bro
+
+
+2
+ likes
+Reply
+ 
+gspteck profile image
+GSPTeck 
+•
+Dec 14 '20
+
+Thank you!
+
+
+1
+ like
+Reply
+ 
+luishnzg profile image
+luishnzg
+•
+May 11
+
+Thank you! I am trying to learn javascript and I need more of these projects explained.
+
+
+2
+ likes
+Reply
+ 
+gspteck profile image
+GSPTeck 
+•
+Jun 19
+
+Very happy I could help!
+
+
+1
+ like
+Reply
+ 
+himanshuhunk profile image
+himanshuhunk
+•
+Aug 20
+
+how to restart timer?
+
+
+Like
+Reply
+Code of Conduct • Report abuse
+Read next
+nbhankes profile image
+Using Sass In Nuxt.js
+Nathan B Hankes - Aug 15
+
+foresthoffman profile image
+Combining GitHub Secrets and Actions
+Forest Hoffman - Aug 19
+
+dannielnavas profile image
+Variables en CSS
+Danniel Navas - Aug 20
+
+threehourcoffee profile image
+Went on a quest to make the most realistic, satisfying virtual fidget spinner!
+marie ng - Aug 19
+
+
+GSPTeck
+Follow
+LOCATION
+Italy
+WORK
+Software Engineer
+JOINED
+Dec 6, 2020
+Trending on DEV Community 
+The Vik profile image
+Top 5 best YouTube channel for programmers
+#codenewbie #webdev #python #javascript
+Tamerlan Gudabayev profile image
+Project Ideas to Make You a Better Developer
+#beginners #programming #career #fullstack
+Dekel profile image
+Last Week I Wrote Some jQuery (and no one fired me 🤓)
+#discuss #javascript #programming #webdev
+body {
+    background: #202020;
+    color: white;
+}
+button {
+    width: 100px;
+    height: 30px;
+    border: 3px soldi white;
+    border-radius: 50px;
+    background: #202020;
+    color: white;
+    cursor: pointer;
+    outline: none;
+}
+
+#stopwatch {
+    font-size: 100px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+}
+#buttons {
+    position: absolute;
+    top: 55%;
+    left: 48.4%;
+    transform: translate(-51.6%, -45%);
+}
+#buttons li {
+    display: inline;
+    padding-left: 10px;
+}
