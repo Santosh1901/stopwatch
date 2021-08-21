@@ -1,2 +1,1 @@
-# js-activity
-my css is not that strong 
+# simple stopwatch using JavaScript.
